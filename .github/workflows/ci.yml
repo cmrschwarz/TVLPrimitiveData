@@ -78,8 +78,10 @@ jobs:
     - name: Update TVL generator repository
       run: |
         cd primitive_data
-        git checkout "$(git config -f ../.gitmodules submodule.primitive_data.branch)"
-        git pull
+        pd_branch=$(git config -f ../.gitmodules submodule.primitive_data.branch)
+        git remote set-branches origin "$pd_branch"
+        git fetch
+        git checkout "origin/$pd_branch"
         cd ..
         git add primitive_data
         git commit -m "update submodule primitive_data" || : # this might 'fail' if the submodule is already up to date
